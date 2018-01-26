@@ -23,7 +23,7 @@ public slots:
     void openPath(void);
     void startRecord(void);
     void stopRecord(void);
-    void stopRecordSignal();
+    void stopRecordSignal(int);
     void refresh();
 };
 

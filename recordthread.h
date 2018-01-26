@@ -32,35 +32,21 @@ public:
             flag = true;
            // writeStream_ = new QDataStream(&file_);
             QTextStream writeStream_(&file_);
-            if(count_ == 0){
-                for(;;){
-                    if(writeStream_.status() != QTextStream::Ok)
-                        return;
-                    if( flag == false){
-                       // delete writeStream_;
-                        //writeStream_.abortTransaction();
-                        file_.close();
-                        emit threadClose();
-                        return;
-                    }
-                    //(*writeStream_) << data_;
-                    writeStream_ << data_;
-                }
-            }
+
             for (uint i = 0; i < count_ ; i++ )
-                //(*writeStream_) << data_;
                 writeStream_ << data_;
+
             file_.close();
-            emit threadClose();
-        }
-        else{
-            QMessageBox msBox;
-            msBox.setWindowTitle("Error");
-            msBox.setText("Ошибка работы с файлом");
-            msBox.exec();
+            emit threadClose(0);
         }
 
+        else
+            emit threadClose(-1);
+
+
     }
+
+ //--------------------------------------------
     void closeStreamWrite(){
         flag = false;
 
@@ -76,7 +62,7 @@ public:
         exit(0);
     }
 signals:
-    void threadClose();
+    void threadClose(int);
 private:
     QString path_;
     QByteArray data_;
