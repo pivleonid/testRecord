@@ -8,51 +8,79 @@
 #include <QDebug>
 
 
+
+#include <QFileInfoList>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+#ifdef LINUXBASE
+    ui->linuxBtn->setVisible(true);
+    ui->label->setVisible(false);
+    ui->comboBox->setVisible(false);
+    ui->refresh_btn->setVisible(false);
+    connect(ui->linuxBtn, SIGNAL(clicked(bool)), this, SLOT(choisePath()));
     connect(ui->startBtn, SIGNAL(clicked(bool)), this,SLOT(startRecord()));
-    connect(ui->stopBtn, SIGNAL(clicked(bool)), this,SLOT(stopRecord()));
+    thread = new recordTHread;
+    connect(thread, SIGNAL(threadClose(int)), this, SLOT(stopRecordSignal(int)));
+    connect(ui->refresh_btn, SIGNAL(clicked(bool)), this, SLOT(refresh()));
+     ui->label_3->setVisible(false);
+
+#endif
+#ifndef LINUXBASE
+    ui->linuxBtn->setVisible(false);
+    ui->label->setVisible(true);
+    ui->comboBox->setVisible(true);
+    ui->refresh_btn->setVisible(true);
+    ui->label_3->setVisible(false);
+
+    connect(ui->startBtn, SIGNAL(clicked(bool)), this,SLOT(startRecord()));
     thread = new recordTHread;
     connect(thread, SIGNAL(threadClose(int)), this, SLOT(stopRecordSignal(int)));
     connect(ui->refresh_btn, SIGNAL(clicked(bool)), this, SLOT(refresh()));
     QFileInfoList  a = QDir::drives();
     for(int i = 0; i < a.size(); i++)
         ui->comboBox->addItem(  a.at(i).absolutePath() );
-
-
-
+#endif
 
 }
+#ifdef LINUXBASE
+void MainWindow::choisePath(){
+   dialog =  QFileDialog::getExistingDirectory(this, "Выбрать каталог для записи", "/home/");
+    ui->label_3->setText(dialog);
+    ui->startBtn->setEnabled(true);
+    ui->label_3->setVisible(true);
 
+}
+#endif
 MainWindow::~MainWindow()
 {
     delete ui;
     delete thread;
 }
 
-void MainWindow::openPath(){
-    QString dir = QFileDialog::getExistingDirectory();
-   // ui->path_l->setText(dir);
-}
+
 
 
 void MainWindow::startRecord(){
+
     ui->startBtn->setEnabled(false);
-    ui->stopBtn->setEnabled(true);
     ui->refresh_btn->setEnabled(false);
     QString data = ui->symbols->text();
-    QByteArray arr;
-    arr.append(data).toHex();
-    QFile(ui->comboBox->currentText() + "testFile").remove();
-    qDebug() << QFile::exists(ui->comboBox->currentText() + "testFile");
-    thread->init(ui->comboBox->currentText() + "testFile", arr, 1024*1024*50/data.count());
+#ifdef LINUXBASE
+    QFile(dialog + "testFile").remove();
+    qDebug() << QFile::exists(dialog + "/" + "testFile");
+    thread->init(dialog+"/" + "testFile", data, 1024*1024*50*2/data.count());
+#endif
+
+
+#ifndef LINUXBASE
+    QFile(ui->comboBox->currentText() + "TextFile").remove();
+    thread->init(ui->comboBox->currentText() + "testFile", data, 1024*1024*50*2/data.count());
+#endif
     thread->start();
-
-
-
 
 }
 
@@ -72,13 +100,19 @@ void MainWindow::stopRecordSignal(int ret){
     if( n == QMessageBox::Cancel){
     thread->exit(0);
     ui->startBtn->setEnabled(true);
-    ui->stopBtn->setEnabled(false);
+  //  ui->stopBtn->setEnabled(false);
     ui->refresh_btn->setEnabled(true);
+
 
     }
 
     if ( n == QMessageBox::Ok){
-        QString file = ui->comboBox->currentText() + "testFile";
+#ifdef LINUXBASE
+         QString file = dialog + "/" + "testFile";
+#endif
+ #ifndef LINUXBASE
+        QString file = ui->comboBox->currentText() + "/" + "testFile";
+#endif
         QFile(file).remove();
         qDebug() << QFile::exists(file);
         thread->exit(0);
@@ -101,4 +135,5 @@ void MainWindow::refresh(){
        ui->comboBox->addItem(  a.at(i).absolutePath() );
    ui->comboBox->update();
    }
+   ui->startBtn->setEnabled(true);
 }

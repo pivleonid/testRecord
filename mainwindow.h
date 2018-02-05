@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "recordthread.h"
+#ifdef LINUXBASE
+#include <QFileDialog>
+#endif
 
 namespace Ui {
 class MainWindow;
@@ -19,12 +22,19 @@ public:
 private:
     Ui::MainWindow *ui;
     recordTHread* thread;
+#ifdef LINUXBASE
+QString dialog;
+#endif
 public slots:
-    void openPath(void);
+
     void startRecord(void);
     void stopRecord(void);
     void stopRecordSignal(int);
     void refresh();
+#ifdef LINUXBASE
+void choisePath();
+#endif
+
 };
 
 #endif // MAINWINDOW_H
