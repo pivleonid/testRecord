@@ -58,10 +58,12 @@ void MainWindow::reaction(){
     if(ui->radioHex->isChecked() == true){
         ui->hexCodeLineEdit->setEnabled(true);
         ui->symbolsLineEdit->setEnabled(false);
+        flagRecordHex_ = true;
     }
     else{
         ui->hexCodeLineEdit->setEnabled(false);
         ui->symbolsLineEdit->setEnabled(true);
+        flagRecordHex_ = false;
     }
      ui->startBtn->setEnabled(true);
 }
@@ -103,25 +105,20 @@ void MainWindow::startRecord(){
         ui->refresh_btn->setEnabled(true);
         return;
     }
-
-
-#ifdef LINUXBASE
-    QFile(dialog + "testFile").remove();
-    qDebug() << QFile::exists(dialog + "/" + "testFile");
-    thread->init(dialog+"/" + "testFile", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked());
-#endif
-
-
-#ifndef LINUXBASE
-    //QFile(ui->comboBox->currentText() + "textFile.txt").remove();
+//Удаление файла, ежели такой существует
     QFile file;
     file.setFileName(ui->comboBox->currentText() + "testFile.txt");
     if(file.open(QIODevice::ReadWrite) > 0){
         file.remove();
     }
     else qDebug() << "err open file";
-
-    thread->init(ui->comboBox->currentText() + "testFile.txt", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked());
+#ifdef LINUXBASE
+    QFile(dialog + "testFile").remove();
+    qDebug() << QFile::exists(dialog + "/" + "testFile");
+    thread->init(dialog+"/" + "testFile", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked(), flagRecordHex_);
+#endif
+#ifndef LINUXBASE
+    thread->init(ui->comboBox->currentText() + "testFile.txt", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked(), flagRecordHex_);
 #endif
     thread->start();
 

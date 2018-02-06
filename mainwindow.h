@@ -22,6 +22,7 @@ public:
 private:
     Ui::MainWindow *ui;
     recordTHread* thread;
+    bool flagRecordHex_; // тип записи
 #ifdef LINUXBASE
 QString dialog;
 #endif
