@@ -8,7 +8,7 @@
 #include <QDebug>
 
 
-
+#include <QDesktopWidget>
 #include <QFileInfoList>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QDesktopWidget* pwdg = QApplication::desktop();
+    move(pwdg->width()/2-width()/2, pwdg->height()/2-height()/2);
 #ifdef LINUXBASE
     ui->linuxBtn->setVisible(true);
     ui->label->setVisible(false);
@@ -48,9 +50,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->symbolsLineEdit->setEnabled(false);
     connect(ui->radioHex,SIGNAL(clicked(bool)), this, SLOT(reaction()));
     connect(ui->radioSymbol, SIGNAL(clicked(bool)), this, SLOT(reaction()));
-     ui->startBtn->setEnabled(false);
-      ui->stopBtn->setEnabled(false);
-      connect(ui->stopBtn, SIGNAL(clicked(bool)), this, SLOT(stopRecord()));
+    ui->startBtn->setEnabled(false);
+    ui->stopBtn->setEnabled(false);
+    connect(ui->stopBtn, SIGNAL(clicked(bool)), this, SLOT(stopRecord()));
+    //Подсказки
+    ui->linuxBtn->setToolTip("Выбрать диск для записи");
+    ui->comboBox->setToolTip("Выбрать диск для записи");
+    ui->refresh_btn->setToolTip("Обновить диски");
+    ui->symbolsLineEdit->setToolTip("Поле ввода");
+    ui->hexCodeLineEdit->setToolTip("Поле ввода");
+    ui->startBtn->setToolTip("Начать запись");
+    ui->stopBtn->setToolTip("Прервать запись");
 
 }
 
@@ -105,19 +115,25 @@ void MainWindow::startRecord(){
         ui->refresh_btn->setEnabled(true);
         return;
     }
-//Удаление файла, ежели такой существует
+
+#ifdef LINUXBASE
+    //Удаление файла, ежели такой существует
     QFile file;
-    file.setFileName(ui->comboBox->currentText() + "testFile.txt");
+    file.setFileName(dialog + "/" + "testFile.txt");
     if(file.open(QIODevice::ReadWrite) > 0){
         file.remove();
     }
     else qDebug() << "err open file";
-#ifdef LINUXBASE
-    QFile(dialog + "testFile").remove();
-    qDebug() << QFile::exists(dialog + "/" + "testFile");
-    thread->init(dialog+"/" + "testFile", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked(), flagRecordHex_);
+    thread->init(dialog+"/" + "testFile.txt", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked(), flagRecordHex_);
 #endif
 #ifndef LINUXBASE
+    //Удаление файла, ежели такой существует
+        QFile file;
+        file.setFileName(ui->comboBox->currentText() + "testFile.txt");
+        if(file.open(QIODevice::ReadWrite) > 0){
+            file.remove();
+        }
+        else qDebug() << "err open file";
     thread->init(ui->comboBox->currentText() + "testFile.txt", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked(), flagRecordHex_);
 #endif
     thread->start();

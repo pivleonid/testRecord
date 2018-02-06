@@ -28,7 +28,6 @@ public:
     }
 
     void run() override{
-        //если максимум достингнут- окошко: Дозаписать или отмена?
         if(flagRecordHex_ == true){
             if(data_.count()%2 == 1)
                 data_.append("0");
@@ -45,24 +44,22 @@ m1:
             if( file_.open(QIODevice::ReadWrite | QIODevice::Append) ){
                 QDataStream writeStream_(&file_);
                 for(uint j = 0; j < count_; j++){
-                    QVector<uint> vecDec;
                     for (uint i = 0; i < dString.count(); i++ ){
                         bool ok;
                         uint dec = dString[i].toUInt(&ok, 16);
-                        vecDec << dec;
 #ifdef LINUXBASE
                         writeStream_<<(u_int8_t) dec;
 #endif
-
-                    }
 #ifndef LINUXBASE
-                    writeStream_ <<  vecDec;
+                        writeStream_ <<  (uint8_t) dec;
 #endif
-                    if(flag == false ){
-                        file_.close();
-                        emit threadClose(0);
-                        return;
+                        if(flag == false ){
+                            file_.close();
+                            emit threadClose(0);
+                            return;
+                        }
                     }
+
                 }
                 if( stopFlag_ == true){
                     //удалить предыдущую запись
@@ -88,7 +85,7 @@ m2:
 
 
 #ifdef LINUXBASE
-                writeStream_<<(u_int8_t) dec;
+                writeStream_<< data_;
 #endif
 #ifndef LINUXBASE
                 writeStream_ << data_;

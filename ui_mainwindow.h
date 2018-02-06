@@ -32,7 +32,7 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_4;
     QPushButton *linuxBtn;
@@ -42,7 +42,6 @@ public:
     QLabel *label;
     QComboBox *comboBox;
     QPushButton *refresh_btn;
-    QSpacerItem *horizontalSpacer_2;
     QHBoxLayout *horizontalLayout_2;
     QRadioButton *radioSymbol;
     QLineEdit *symbolsLineEdit;
@@ -61,17 +60,19 @@ public:
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->setEnabled(true);
         MainWindow->resize(440, 200);
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
+        MainWindow->setMinimumSize(QSize(440, 200));
+        MainWindow->setMaximumSize(QSize(440, 200));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        widget = new QWidget(centralWidget);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(0, 0, 436, 195));
-        verticalLayout = new QVBoxLayout(widget);
+        layoutWidget = new QWidget(centralWidget);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(0, 0, 436, 195));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
@@ -79,7 +80,7 @@ public:
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        linuxBtn = new QPushButton(widget);
+        linuxBtn = new QPushButton(layoutWidget);
         linuxBtn->setObjectName(QStringLiteral("linuxBtn"));
 
         horizontalLayout_4->addWidget(linuxBtn);
@@ -88,7 +89,7 @@ public:
 
         horizontalLayout_4->addItem(horizontalSpacer);
 
-        label_3 = new QLabel(widget);
+        label_3 = new QLabel(layoutWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setFrameShape(QFrame::NoFrame);
 
@@ -100,24 +101,20 @@ public:
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setSpacing(6);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        label = new QLabel(widget);
+        label = new QLabel(layoutWidget);
         label->setObjectName(QStringLiteral("label"));
 
         horizontalLayout_5->addWidget(label);
 
-        comboBox = new QComboBox(widget);
+        comboBox = new QComboBox(layoutWidget);
         comboBox->setObjectName(QStringLiteral("comboBox"));
 
         horizontalLayout_5->addWidget(comboBox);
 
-        refresh_btn = new QPushButton(widget);
+        refresh_btn = new QPushButton(layoutWidget);
         refresh_btn->setObjectName(QStringLiteral("refresh_btn"));
 
         horizontalLayout_5->addWidget(refresh_btn);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_5->addItem(horizontalSpacer_2);
 
 
         verticalLayout->addLayout(horizontalLayout_5);
@@ -125,12 +122,12 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        radioSymbol = new QRadioButton(widget);
+        radioSymbol = new QRadioButton(layoutWidget);
         radioSymbol->setObjectName(QStringLiteral("radioSymbol"));
 
         horizontalLayout_2->addWidget(radioSymbol);
 
-        symbolsLineEdit = new QLineEdit(widget);
+        symbolsLineEdit = new QLineEdit(layoutWidget);
         symbolsLineEdit->setObjectName(QStringLiteral("symbolsLineEdit"));
 
         horizontalLayout_2->addWidget(symbolsLineEdit);
@@ -141,12 +138,12 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        radioHex = new QRadioButton(widget);
+        radioHex = new QRadioButton(layoutWidget);
         radioHex->setObjectName(QStringLiteral("radioHex"));
 
         horizontalLayout->addWidget(radioHex);
 
-        hexCodeLineEdit = new QLineEdit(widget);
+        hexCodeLineEdit = new QLineEdit(layoutWidget);
         hexCodeLineEdit->setObjectName(QStringLiteral("hexCodeLineEdit"));
 
         horizontalLayout->addWidget(hexCodeLineEdit);
@@ -154,7 +151,7 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        autoCheckBox = new QCheckBox(widget);
+        autoCheckBox = new QCheckBox(layoutWidget);
         autoCheckBox->setObjectName(QStringLiteral("autoCheckBox"));
 
         verticalLayout->addWidget(autoCheckBox);
@@ -162,7 +159,7 @@ public:
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        startBtn = new QPushButton(widget);
+        startBtn = new QPushButton(layoutWidget);
         startBtn->setObjectName(QStringLiteral("startBtn"));
 
         horizontalLayout_3->addWidget(startBtn);
@@ -171,7 +168,7 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_3);
 
-        stopBtn = new QPushButton(widget);
+        stopBtn = new QPushButton(layoutWidget);
         stopBtn->setObjectName(QStringLiteral("stopBtn"));
 
         horizontalLayout_3->addWidget(stopBtn);
@@ -180,10 +177,6 @@ public:
         verticalLayout->addLayout(horizontalLayout_3);
 
         MainWindow->setCentralWidget(centralWidget);
-        symbolsLineEdit->raise();
-        radioSymbol->raise();
-        stopBtn->raise();
-        autoCheckBox->raise();
 
         retranslateUi(MainWindow);
 
