@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.2.1
+** Created by: Qt User Interface Compiler version 5.9.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -13,14 +13,17 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -29,106 +32,158 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QGridLayout *gridLayout_3;
-    QGridLayout *gridLayout;
-    QSpacerItem *horizontalSpacer_2;
-    QLabel *label;
-    QComboBox *comboBox;
-    QPushButton *refresh_btn;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout_4;
     QPushButton *linuxBtn;
     QSpacerItem *horizontalSpacer;
     QLabel *label_3;
-    QSpacerItem *horizontalSpacer_4;
-    QGridLayout *gridLayout_2;
-    QLabel *label_2;
-    QLineEdit *symbols;
+    QHBoxLayout *horizontalLayout_5;
+    QLabel *label;
+    QComboBox *comboBox;
+    QPushButton *refresh_btn;
+    QSpacerItem *horizontalSpacer_2;
+    QHBoxLayout *horizontalLayout_2;
+    QRadioButton *radioSymbol;
+    QLineEdit *symbolsLineEdit;
+    QHBoxLayout *horizontalLayout;
+    QRadioButton *radioHex;
+    QLineEdit *hexCodeLineEdit;
+    QCheckBox *autoCheckBox;
+    QHBoxLayout *horizontalLayout_3;
     QPushButton *startBtn;
     QSpacerItem *horizontalSpacer_3;
+    QPushButton *stopBtn;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(527, 217);
+        MainWindow->setEnabled(true);
+        MainWindow->resize(440, 200);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
+        MainWindow->setSizePolicy(sizePolicy);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        gridLayout_3 = new QGridLayout(centralWidget);
-        gridLayout_3->setSpacing(6);
-        gridLayout_3->setContentsMargins(11, 11, 11, 11);
-        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        gridLayout = new QGridLayout();
-        gridLayout->setSpacing(6);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_2, 0, 7, 1, 1);
-
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-
-        gridLayout->addWidget(label, 0, 4, 1, 1);
-
-        comboBox = new QComboBox(centralWidget);
-        comboBox->setObjectName(QStringLiteral("comboBox"));
-
-        gridLayout->addWidget(comboBox, 0, 5, 1, 1);
-
-        refresh_btn = new QPushButton(centralWidget);
-        refresh_btn->setObjectName(QStringLiteral("refresh_btn"));
-
-        gridLayout->addWidget(refresh_btn, 0, 6, 1, 1);
-
-        linuxBtn = new QPushButton(centralWidget);
+        widget = new QWidget(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(0, 0, 436, 195));
+        verticalLayout = new QVBoxLayout(widget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        linuxBtn = new QPushButton(widget);
         linuxBtn->setObjectName(QStringLiteral("linuxBtn"));
 
-        gridLayout->addWidget(linuxBtn, 0, 0, 1, 1);
+        horizontalLayout_4->addWidget(linuxBtn);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout->addItem(horizontalSpacer, 0, 3, 1, 1);
+        horizontalLayout_4->addItem(horizontalSpacer);
 
-        label_3 = new QLabel(centralWidget);
+        label_3 = new QLabel(widget);
         label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setFrameShape(QFrame::Panel);
+        label_3->setFrameShape(QFrame::NoFrame);
 
-        gridLayout->addWidget(label_3, 0, 2, 1, 1);
-
-        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_4, 0, 1, 1, 1);
+        horizontalLayout_4->addWidget(label_3);
 
 
-        gridLayout_3->addLayout(gridLayout, 0, 0, 1, 1);
+        verticalLayout->addLayout(horizontalLayout_4);
 
-        gridLayout_2 = new QGridLayout();
-        gridLayout_2->setSpacing(6);
-        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        label_2 = new QLabel(centralWidget);
-        label_2->setObjectName(QStringLiteral("label_2"));
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        label = new QLabel(widget);
+        label->setObjectName(QStringLiteral("label"));
 
-        gridLayout_2->addWidget(label_2, 0, 0, 1, 2);
+        horizontalLayout_5->addWidget(label);
 
-        symbols = new QLineEdit(centralWidget);
-        symbols->setObjectName(QStringLiteral("symbols"));
+        comboBox = new QComboBox(widget);
+        comboBox->setObjectName(QStringLiteral("comboBox"));
 
-        gridLayout_2->addWidget(symbols, 0, 2, 1, 1);
+        horizontalLayout_5->addWidget(comboBox);
 
-        startBtn = new QPushButton(centralWidget);
+        refresh_btn = new QPushButton(widget);
+        refresh_btn->setObjectName(QStringLiteral("refresh_btn"));
+
+        horizontalLayout_5->addWidget(refresh_btn);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_2);
+
+
+        verticalLayout->addLayout(horizontalLayout_5);
+
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        radioSymbol = new QRadioButton(widget);
+        radioSymbol->setObjectName(QStringLiteral("radioSymbol"));
+
+        horizontalLayout_2->addWidget(radioSymbol);
+
+        symbolsLineEdit = new QLineEdit(widget);
+        symbolsLineEdit->setObjectName(QStringLiteral("symbolsLineEdit"));
+
+        horizontalLayout_2->addWidget(symbolsLineEdit);
+
+
+        verticalLayout->addLayout(horizontalLayout_2);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        radioHex = new QRadioButton(widget);
+        radioHex->setObjectName(QStringLiteral("radioHex"));
+
+        horizontalLayout->addWidget(radioHex);
+
+        hexCodeLineEdit = new QLineEdit(widget);
+        hexCodeLineEdit->setObjectName(QStringLiteral("hexCodeLineEdit"));
+
+        horizontalLayout->addWidget(hexCodeLineEdit);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        autoCheckBox = new QCheckBox(widget);
+        autoCheckBox->setObjectName(QStringLiteral("autoCheckBox"));
+
+        verticalLayout->addWidget(autoCheckBox);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        startBtn = new QPushButton(widget);
         startBtn->setObjectName(QStringLiteral("startBtn"));
 
-        gridLayout_2->addWidget(startBtn, 1, 0, 1, 1);
+        horizontalLayout_3->addWidget(startBtn);
 
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout_2->addItem(horizontalSpacer_3, 1, 1, 1, 1);
+        horizontalLayout_3->addItem(horizontalSpacer_3);
+
+        stopBtn = new QPushButton(widget);
+        stopBtn->setObjectName(QStringLiteral("stopBtn"));
+
+        horizontalLayout_3->addWidget(stopBtn);
 
 
-        gridLayout_3->addLayout(gridLayout_2, 1, 0, 1, 1);
+        verticalLayout->addLayout(horizontalLayout_3);
 
         MainWindow->setCentralWidget(centralWidget);
-        label_2->raise();
-        symbols->raise();
-        startBtn->raise();
+        symbolsLineEdit->raise();
+        radioSymbol->raise();
+        stopBtn->raise();
+        autoCheckBox->raise();
 
         retranslateUi(MainWindow);
 
@@ -137,14 +192,18 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\320\242\320\265\321\201\321\202 \320\266\320\265\321\201\321\202\320\272\320\270\321\205 \320\264\320\270\321\201\320\272\320\276\320\262 \320\270 \321\201\320\274\320\265\320\275\320\275\321\213\321\205 \320\275\320\276\321\201\320\270\321\202\320\265\320\273\320\265\320\271.    v.1.0.0.0", 0));
-        label->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\264\320\270\321\201\320\272 \320\264\320\273\321\217 \320\267\320\260\320\277\320\270\321\201\320\270:", 0));
-        refresh_btn->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214", 0));
-        linuxBtn->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\264\320\270\321\201\320\272 \320\264\320\273\321\217 \320\267\320\260\320\277\320\270\321\201\320\270", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\320\242\320\265\321\201\321\202 \320\266\320\265\321\201\321\202\320\272\320\270\321\205 \320\264\320\270\321\201\320\272\320\276\320\262 \320\270 \321\201\320\274\320\265\320\275\320\275\321\213\321\205 \320\275\320\276\321\201\320\270\321\202\320\265\320\273\320\265\320\271.    v.1.0.0.0", Q_NULLPTR));
+        linuxBtn->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\264\320\270\321\201\320\272 \320\264\320\273\321\217 \320\267\320\260\320\277\320\270\321\201\320\270", Q_NULLPTR));
         label_3->setText(QString());
-        label_2->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\320\273\320\265\320\264\320\276\320\262\320\260\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214 \321\201\320\270\320\274\320\262\320\276\320\273\320\276\320\262 \320\264\320\273\321\217 \320\267\320\260\320\277\320\270\321\201\320\270:", 0));
-        symbols->setText(QApplication::translate("MainWindow", "1", 0));
-        startBtn->setText(QApplication::translate("MainWindow", "\320\241\321\202\320\260\321\200\321\202", 0));
+        label->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \320\264\320\270\321\201\320\272 \320\264\320\273\321\217 \320\267\320\260\320\277\320\270\321\201\320\270:", Q_NULLPTR));
+        refresh_btn->setText(QApplication::translate("MainWindow", "\320\236\320\261\320\275\320\276\320\262\320\270\321\202\321\214", Q_NULLPTR));
+        radioSymbol->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\320\273\320\265\320\264\320\276\320\262\320\260\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214 \321\201\320\270\320\274\320\262\320\276\320\273\320\276\320\262 \320\264\320\273\321\217  \320\267\320\260\320\277\320\270\321\201\320\270:", Q_NULLPTR));
+        symbolsLineEdit->setText(QApplication::translate("MainWindow", "qwerty", Q_NULLPTR));
+        radioHex->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\320\273\320\265\320\264\320\276\320\262\320\260\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214 Hex \320\272\320\276\320\264\320\276\320\262 \320\264\320\273\321\217 \320\267\320\260\320\277\320\270\321\201\320\270:", Q_NULLPTR));
+        hexCodeLineEdit->setText(QApplication::translate("MainWindow", "DA30", Q_NULLPTR));
+        autoCheckBox->setText(QApplication::translate("MainWindow", "\320\222\320\272\320\273\321\216\321\207\320\265\320\275\320\270\320\265 \320\260\320\262\321\202\320\276\320\274\320\260\321\202\320\270\321\207\320\265\321\201\320\272\320\276\320\271 \320\277\320\265\321\200\320\265\320\267\320\260\320\277\320\270\321\201\320\270", Q_NULLPTR));
+        startBtn->setText(QApplication::translate("MainWindow", "\320\241\321\202\320\260\321\200\321\202", Q_NULLPTR));
+        stopBtn->setText(QApplication::translate("MainWindow", "\320\241\321\202\320\276\320\277", Q_NULLPTR));
     } // retranslateUi
 
 };

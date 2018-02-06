@@ -18,31 +18,36 @@ public:
     recordTHread(){
 
     }
-    void init(QString path ,QString data, uint count){
-        path_ = path;
-        data_ = data;
-        count_ = count;
+    void init(QString path ,QString data, uint count, bool stopFlag, bool code):
+    path_(path), data_(data), count_(count), stopFlag_(stopFlag), code_(code)
+    {
+//        path_ = path;
+//        data_ = data;
+//        count_ = count;
+//        stopFlag_ = stopFlag;
+//        code_ = code;
     }
 
     void run() override{
         //если максимум достингнут- окошко: Дозаписать или отмена?
 
+        if(data_.count()%2 == 1)
+            data_.append("0");
+        QStringList dString;
+        for(int i = 0; i < data_.count(); i+=2){
+            QString pref("0x");
+            pref.append(data_.at(i));
+            pref.append( data_.at(i+1));
+            dString << pref;
+        }
+        flag = true;
         file_.setFileName(path_);
+m1:
         if( file_.open(QIODevice::ReadWrite | QIODevice::Append) ){
-            flag = true;
             QDataStream writeStream_(&file_);
-            if(data_.count()%2 == 1)
-                data_.append("0");
-            QStringList dString;
-            for(int i = 0; i < data_.count(); i+=2){
-                QString pref("0x");
-                pref.append(data_.at(i));
-                pref.append( data_.at(i+1));
-                dString << pref;
-            }
             for(uint j = 0; j < count_; j++){
                 for (uint i = 0; i < dString.count() ; i++ ){
-                       bool ok;
+                    bool ok;
                     uint dec = dString[i].toUInt(&ok, 16);
 #ifdef LINUXBASE
                     writeStream_<<(u_int8_t) dec;
@@ -50,7 +55,17 @@ public:
 #ifndef LINUXBASE
                     writeStream_ << (uint8_t) dec;
 #endif
+                    if(flag == false ){
+                        file_.close();
+                        emit threadClose(0);
+                        return;
+                    }
                 }
+            }
+            if( stopFlag_ == true){
+                //удалить предыдущую запись
+                file_.remove(); //файл закрывается после удаления
+                goto m1;
             }
             file_.close();
             emit threadClose(0);
@@ -85,7 +100,10 @@ private:
     uint count_;
     QFile file_;
     //QDataStream* writeStream_;
-    bool flag;
+    bool flag;     //остановка записи по кнопке
+    bool stopFlag_; //повторить запись?
+    bool code_; //какую запись файла использовать?
+
 };
 
 #endif // RECORDTHREAD_H

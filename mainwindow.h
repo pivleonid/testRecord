@@ -31,6 +31,7 @@ public slots:
     void stopRecord(void);
     void stopRecordSignal(int);
     void refresh();
+    void reaction();
 #ifdef LINUXBASE
 void choisePath();
 #endif

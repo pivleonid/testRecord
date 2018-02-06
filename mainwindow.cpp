@@ -44,8 +44,28 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i = 0; i < a.size(); i++)
         ui->comboBox->addItem(  a.at(i).absolutePath() );
 #endif
+    ui->hexCodeLineEdit->setEnabled(false);
+    ui->symbolsLineEdit->setEnabled(false);
+    connect(ui->radioHex,SIGNAL(clicked(bool)), this, SLOT(reaction()));
+    connect(ui->radioSymbol, SIGNAL(clicked(bool)), this, SLOT(reaction()));
+     ui->startBtn->setEnabled(false);
+      ui->stopBtn->setEnabled(false);
+      connect(ui->stopBtn, SIGNAL(clicked(bool)), this, SLOT(stopRecord()));
 
 }
+
+void MainWindow::reaction(){
+    if(ui->radioHex->isChecked() == true){
+        ui->hexCodeLineEdit->setEnabled(true);
+        ui->symbolsLineEdit->setEnabled(false);
+    }
+    else{
+        ui->hexCodeLineEdit->setEnabled(false);
+        ui->symbolsLineEdit->setEnabled(true);
+    }
+     ui->startBtn->setEnabled(true);
+}
+
 #ifdef LINUXBASE
 void MainWindow::choisePath(){
    dialog =  QFileDialog::getExistingDirectory(this, "Выбрать каталог для записи", "/home/");
@@ -68,17 +88,40 @@ void MainWindow::startRecord(){
 
     ui->startBtn->setEnabled(false);
     ui->refresh_btn->setEnabled(false);
-    QString data = ui->symbols->text();
+    ui->stopBtn->setEnabled(true);
+    QString data;
+    if(ui->radioHex->isChecked() == true)
+          data = ui->hexCodeLineEdit->text();
+   else
+     data = ui->symbolsLineEdit->text();
+    if(data == ""){
+        QMessageBox msb;
+        msb.setText("Введите хотя бы один символ!");
+        msb.exec();
+        ui->startBtn->setEnabled(true);
+        ui->stopBtn->setEnabled(false);
+        ui->refresh_btn->setEnabled(true);
+        return;
+    }
+
+
 #ifdef LINUXBASE
     QFile(dialog + "testFile").remove();
     qDebug() << QFile::exists(dialog + "/" + "testFile");
-    thread->init(dialog+"/" + "testFile", data, 1024*1024*50*2/data.count());
+    thread->init(dialog+"/" + "testFile", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked());
 #endif
 
 
 #ifndef LINUXBASE
-    QFile(ui->comboBox->currentText() + "TextFile").remove();
-    thread->init(ui->comboBox->currentText() + "testFile", data, 1024*1024*50*2/data.count());
+    //QFile(ui->comboBox->currentText() + "textFile.txt").remove();
+    QFile file;
+    file.setFileName(ui->comboBox->currentText() + "testFile.txt");
+    if(file.open(QIODevice::ReadWrite) > 0){
+        file.remove();
+    }
+    else qDebug() << "err open file";
+
+    thread->init(ui->comboBox->currentText() + "testFile.txt", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked());
 #endif
     thread->start();
 
@@ -95,29 +138,24 @@ void MainWindow::stopRecordSignal(int ret){
          QMessageBox::warning(this, "Error", "Ошибка работы с файлом", QMessageBox::Ok, QMessageBox::NoButton);
         return;
     }
-    int n =  QMessageBox::information(this, "Внимание!", "Продолжить запись?", QMessageBox::Ok, QMessageBox::Cancel);
 
-    if( n == QMessageBox::Cancel){
     thread->exit(0);
     ui->startBtn->setEnabled(true);
   //  ui->stopBtn->setEnabled(false);
     ui->refresh_btn->setEnabled(true);
 
 
-    }
+//#ifdef LINUXBASE
+//         QString file = dialog + "/" + "testFile";
+//#endif
+// #ifndef LINUXBASE
+//        QString file = ui->comboBox->currentText() + "/" + "testFile";
+//#endif
+//        QFile(file).remove();
+//        qDebug() << QFile::exists(file);
+//        thread->exit(0);
+//        startRecord();
 
-    if ( n == QMessageBox::Ok){
-#ifdef LINUXBASE
-         QString file = dialog + "/" + "testFile";
-#endif
- #ifndef LINUXBASE
-        QString file = ui->comboBox->currentText() + "/" + "testFile";
-#endif
-        QFile(file).remove();
-        qDebug() << QFile::exists(file);
-        thread->exit(0);
-        startRecord();
-    }
 
 }
 

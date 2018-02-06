@@ -35,3 +35,4 @@ FORMS += \
         mainwindow.ui
 
 unix: {DEFINES += LINUXBASE}
+
