@@ -15,6 +15,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -32,7 +33,7 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralWidget;
-    QWidget *layoutWidget;
+    QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_4;
     QPushButton *linuxBtn;
@@ -41,6 +42,7 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QLabel *label;
     QComboBox *comboBox;
+    QSpacerItem *horizontalSpacer_2;
     QPushButton *refresh_btn;
     QHBoxLayout *horizontalLayout_2;
     QRadioButton *radioSymbol;
@@ -59,28 +61,27 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->setEnabled(true);
-        MainWindow->resize(440, 200);
+        MainWindow->resize(540, 217);
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
-        MainWindow->setMinimumSize(QSize(440, 200));
-        MainWindow->setMaximumSize(QSize(440, 200));
+        MainWindow->setMinimumSize(QSize(540, 200));
+        MainWindow->setMaximumSize(QSize(540, 217));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        layoutWidget = new QWidget(centralWidget);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(0, 0, 436, 195));
-        verticalLayout = new QVBoxLayout(layoutWidget);
+        gridLayout = new QGridLayout(centralWidget);
+        gridLayout->setSpacing(6);
+        gridLayout->setContentsMargins(11, 11, 11, 11);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        linuxBtn = new QPushButton(layoutWidget);
+        linuxBtn = new QPushButton(centralWidget);
         linuxBtn->setObjectName(QStringLiteral("linuxBtn"));
 
         horizontalLayout_4->addWidget(linuxBtn);
@@ -89,7 +90,7 @@ public:
 
         horizontalLayout_4->addItem(horizontalSpacer);
 
-        label_3 = new QLabel(layoutWidget);
+        label_3 = new QLabel(centralWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setFrameShape(QFrame::NoFrame);
 
@@ -101,17 +102,21 @@ public:
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setSpacing(6);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        label = new QLabel(layoutWidget);
+        label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
 
         horizontalLayout_5->addWidget(label);
 
-        comboBox = new QComboBox(layoutWidget);
+        comboBox = new QComboBox(centralWidget);
         comboBox->setObjectName(QStringLiteral("comboBox"));
 
         horizontalLayout_5->addWidget(comboBox);
 
-        refresh_btn = new QPushButton(layoutWidget);
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_2);
+
+        refresh_btn = new QPushButton(centralWidget);
         refresh_btn->setObjectName(QStringLiteral("refresh_btn"));
 
         horizontalLayout_5->addWidget(refresh_btn);
@@ -122,12 +127,12 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        radioSymbol = new QRadioButton(layoutWidget);
+        radioSymbol = new QRadioButton(centralWidget);
         radioSymbol->setObjectName(QStringLiteral("radioSymbol"));
 
         horizontalLayout_2->addWidget(radioSymbol);
 
-        symbolsLineEdit = new QLineEdit(layoutWidget);
+        symbolsLineEdit = new QLineEdit(centralWidget);
         symbolsLineEdit->setObjectName(QStringLiteral("symbolsLineEdit"));
 
         horizontalLayout_2->addWidget(symbolsLineEdit);
@@ -138,12 +143,12 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        radioHex = new QRadioButton(layoutWidget);
+        radioHex = new QRadioButton(centralWidget);
         radioHex->setObjectName(QStringLiteral("radioHex"));
 
         horizontalLayout->addWidget(radioHex);
 
-        hexCodeLineEdit = new QLineEdit(layoutWidget);
+        hexCodeLineEdit = new QLineEdit(centralWidget);
         hexCodeLineEdit->setObjectName(QStringLiteral("hexCodeLineEdit"));
 
         horizontalLayout->addWidget(hexCodeLineEdit);
@@ -151,7 +156,7 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        autoCheckBox = new QCheckBox(layoutWidget);
+        autoCheckBox = new QCheckBox(centralWidget);
         autoCheckBox->setObjectName(QStringLiteral("autoCheckBox"));
 
         verticalLayout->addWidget(autoCheckBox);
@@ -159,7 +164,7 @@ public:
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        startBtn = new QPushButton(layoutWidget);
+        startBtn = new QPushButton(centralWidget);
         startBtn->setObjectName(QStringLiteral("startBtn"));
 
         horizontalLayout_3->addWidget(startBtn);
@@ -168,13 +173,16 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_3);
 
-        stopBtn = new QPushButton(layoutWidget);
+        stopBtn = new QPushButton(centralWidget);
         stopBtn->setObjectName(QStringLiteral("stopBtn"));
 
         horizontalLayout_3->addWidget(stopBtn);
 
 
         verticalLayout->addLayout(horizontalLayout_3);
+
+
+        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
 

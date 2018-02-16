@@ -33,6 +33,7 @@ public slots:
     void stopRecordSignal(int);
     void refresh();
     void reaction();
+    void closeEvent(QCloseEvent* event);
 #ifdef LINUXBASE
 void choisePath();
 #endif

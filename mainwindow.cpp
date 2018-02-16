@@ -7,18 +7,24 @@
 #include <QFile>
 #include <QDebug>
 
-
+#include <QStorageInfo>
 #include <QDesktopWidget>
 #include <QFileInfoList>
+#include <QSettings>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QDesktopWidget* pwdg = QApplication::desktop();
+    ///Центрирование
+   QDesktopWidget* pwdg = QApplication::desktop();
     move(pwdg->width()/2-width()/2, pwdg->height()/2-height()/2);
 #ifdef LINUXBASE
+    QTextCodec* codec = QTextCodec::codecForName("UTF-8");
+    QTextCodec::setCodecForLocale(codec);
+    QTextCodec::setCodecForCStrings(codec);
+    QTextCodec::setCodecForTr(codec);
     ui->linuxBtn->setVisible(true);
     ui->label->setVisible(false);
     ui->comboBox->setVisible(false);
@@ -57,10 +63,30 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->linuxBtn->setToolTip("Выбрать диск для записи");
     ui->comboBox->setToolTip("Выбрать диск для записи");
     ui->refresh_btn->setToolTip("Обновить диски");
-    ui->symbolsLineEdit->setToolTip("Поле ввода");
-    ui->hexCodeLineEdit->setToolTip("Поле ввода");
+    ui->symbolsLineEdit->setToolTip("Поле ввода символов");
+    ui->hexCodeLineEdit->setToolTip("Поле ввода HEX кодов");
     ui->startBtn->setToolTip("Начать запись");
     ui->stopBtn->setToolTip("Прервать запись");
+
+    QRegExp codeReg("[0-9,A-F]{1,}");
+    QRegExpValidator *ipValidator1 = new QRegExpValidator(codeReg, this);
+    ui->hexCodeLineEdit->setValidator(ipValidator1);
+
+
+    //Заргузка сохраненных данных
+    QFile file("testRecord.conf");
+     if(file.size() == 0){
+         return;
+     }
+     QSettings settings( "testRecord.conf", QSettings::IniFormat );
+     settings.beginGroup( "saveState" );
+     bool check = settings.value("radioSymbol").toBool();
+     ui->radioSymbol->setChecked(check);
+     ui->radioHex->setChecked(settings.value("radioHex").toBool());
+     ui->autoCheckBox->setChecked(settings.value("autoRecord").toBool());
+     ui->symbolsLineEdit->setText(settings.value("symbols").toString());
+      ui->hexCodeLineEdit->setText(settings.value("hex").toString());
+     settings.endGroup();
 
 }
 
@@ -134,7 +160,18 @@ void MainWindow::startRecord(){
             file.remove();
         }
         else qDebug() << "err open file";
-    thread->init(ui->comboBox->currentText() + "testFile.txt", data, 1024*1024*50*2/data.count(), ui->autoCheckBox->isChecked(), flagRecordHex_);
+QList<QStorageInfo> listStorage = QStorageInfo::mountedVolumes();
+qint64 count = 0;
+foreach (auto var, listStorage) {
+    if (var.displayName() == ui->comboBox->currentText()){
+    count = var.bytesFree() / 2; //т.к. заполнить надо половину
+    break;
+    }
+
+}
+
+
+thread->init(ui->comboBox->currentText() + "testFile.txt", data, count*2/data.count(), ui->autoCheckBox->isChecked(), flagRecordHex_);
 #endif
     thread->start();
 
@@ -187,4 +224,20 @@ void MainWindow::refresh(){
    ui->comboBox->update();
    }
    ui->startBtn->setEnabled(true);
+}
+
+
+
+void MainWindow::closeEvent(QCloseEvent* event){
+
+    QSettings settings( "testRecord.conf", QSettings::IniFormat );
+    settings.beginGroup( "saveState" );
+    settings.setValue( "radioSymbol", ui->radioSymbol->isChecked() );
+    settings.setValue( "radioHex", ui->radioHex->isChecked() );
+    //
+    settings.setValue( "autoRecord", ui->autoCheckBox->isChecked() );
+    settings.setValue( "symbols", ui->symbolsLineEdit->text() );
+    settings.setValue( "hex", ui->hexCodeLineEdit->text() );
+    //
+    settings.endGroup();
 }
